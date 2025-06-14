@@ -1,9 +1,9 @@
-import HeaderIndex from "./components/HeaderIndex.js";
-import './style/app.css';
+import HeaderScotby from "./components/HeaderScotby.js";
+import './style/scotby.css';
 import favicon from "./static/map_icon.png";
 import { useEffect } from "react";
 
-function App() {
+function Scotby() {
   useEffect(() => {
     async function fetchDocuments() {
       const response = await fetch('http://localhost:3001/api/documents', {
@@ -13,8 +13,8 @@ function App() {
       const data = await response.json();
 
       let num = 0;
-      for (const file of data[0]) {
-        const response_fetch = await fetch('http://localhost:3001/api/contents/shared_noticeboard', {
+      for (const file of data[3]) {
+        const response_fetch = await fetch('http://localhost:3001/api/contents/scotby_noticeboard', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -46,9 +46,9 @@ function App() {
         zoom_document.style.display = "none";
         zoom_document.style.position = "absolute";
         zoom_document.style.top = "5%";
+        zoom_document.style.cursor = "pointer";
         zoom_document.style.left = "31%";
         zoom_document.style.height = "90%";
-        zoom_document.style.cursor = "pointer";
         zoom_document.onclick = () => {
           zoom_document.style.display = "none";
         }
@@ -82,7 +82,7 @@ function App() {
   
   return (
     <>
-      <HeaderIndex />
+      <HeaderScotby />
       <div style={{ display: 'flex' }}>
         <div
           id="documents_container"
@@ -98,6 +98,7 @@ function App() {
             scrollbarWidth: 'none'
           }}
         ></div>
+
         <div
           style={{
             width: '200px',
@@ -113,15 +114,13 @@ function App() {
             height: '70%'
           }}
         >
-          <a style={{ color: 'black', fontSize: '110px', backgroundColor: '#ABEBC6', display: 'flex', alignItems: 'center', height: '200px', border: '4px solid black', cursor: 'pointer', justifyContent: 'center', textDecoration: 'none' }} href="/brampton">BC</a>
-          <a style={{ color: 'black', fontSize: '105px', backgroundColor: '#F9E79F', display: 'flex', alignItems: 'center', height: '200px', border: '4px solid black', cursor: 'pointer', justifyContent: 'center', textDecoration: 'none' }} href="/moorhouse">MC</a>
-          <a style={{ color: 'black', fontSize: '110px', backgroundColor: '#D7BDE2', display: 'flex', alignItems: 'center', height: '200px', border: '4px solid black', cursor: 'pointer', justifyContent: 'center', textDecoration: 'none' }} href="/scotby">SC</a>
+          <a style={{ color: 'black', fontSize: '60px', backgroundColor: '#fff', display: 'flex', alignItems: 'center', height: '200px', width: "200px", border: '4px solid black', cursor: 'pointer', justifyContent: 'center', textDecoration: 'none' }} href="/">BACK</a>
           <img
             src={favicon}
             style={{ border: '4px solid black', textDecoration: 'none', cursor: 'pointer', backgroundColor: 'black' }}
             width="200"
             height="200"
-            onClick={() => (window.location.href = '/shared_map')}
+            onClick={() => (window.location.href = '/scotby_map')}
             alt="Map Icon"
           />
         </div>
@@ -130,4 +129,4 @@ function App() {
   );
 }
 
-export default App;
+export default Scotby;
