@@ -14,6 +14,5 @@ app.use(express.json());
 route(app);
 
 app.listen(port, () => {
-  console.log(`Started database.`);
   console.log(`Listening on http://localhost:${port}`);
 });
