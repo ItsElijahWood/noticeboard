@@ -1,6 +1,10 @@
 # Digital Noticeboard
 
-A digital notice board made using React, JS, TS.
+A modern **Digital Noticeboard** built using **React**, **JavaScript**, and **TypeScript**.
 
-# Documentation
-Coming soon..
+---
+
+## GitHub Branch Structure
+
+- `master` – Frontend application
+- `backend` – Backend services 
