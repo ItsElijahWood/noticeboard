@@ -55,6 +55,8 @@ Make sure to include the following file for Google Drive authentication:
 
 ```bash
 # Create the project directory
+sudo apt install npm
+
 mkdir noticeboard
 cd noticeboard
 
@@ -70,11 +72,13 @@ git clone -b backend https://github.com/itselijahwood/noticeboard.git ./backend
 Run the backend first
 ```bash 
 cd ./backend
+npm i
 npm run start
 ```
 
 Run the frontend
 ```bash
 cd ./noticeboard
+npm i
 npm run start
 ```
