@@ -51,12 +51,13 @@ Make sure to include the following file for Google Drive authentication:
 - [Node.js](https://nodejs.org/)
 - [Git](https://git-scm.com/)
 
-### 2. Clone the Repository
+### 2. Clone the Repository and Install npm
 
 ```bash
-# Create the project directory
+# Install npm
 sudo apt install npm
 
+# Create the project directory
 mkdir noticeboard
 cd noticeboard
 
