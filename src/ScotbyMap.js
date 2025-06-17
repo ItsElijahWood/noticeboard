@@ -29,8 +29,8 @@ function ScotbyMap() {
         const documents = document.createElement(`img`);
         documents.src = urlFile.url;
         documents.alt = `Document ${num}`;
-        documents.width = 2400;
-        documents.height = 1300;
+        documents.style.width = "100%";
+        documents.style.height = "100%";
 
         divdisplay.appendChild(documents);
       };
