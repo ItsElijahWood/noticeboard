@@ -83,7 +83,7 @@ export async function connGoogleApi(): Promise<void> {
   }
 
   const auth = new google.auth.GoogleAuth({
-    keyFile: path.resolve(__dirname, './env/noticeboard-drive-api-241da4909940.json'),
+    keyFile: path.resolve(__dirname, './env/noticeboard-drive-api.json'),
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
 
