@@ -66,7 +66,7 @@ function App() {
             flexWrap: 'wrap',
             gap: '40px',
             overflowY: 'auto',
-            height: '1600px',
+            height: '1800px',
             scrollbarWidth: 'none'
           }}
         >
@@ -118,7 +118,7 @@ function PDFCanvas({ url }) {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
 
-        const scale = 0.98;
+        const scale = 1.35;
         const viewport = page.getViewport({ scale });
 
         const outputScale = window.devicePixelRatio || 1;
