@@ -29,7 +29,7 @@ function ScotbyMap() {
         const documents = document.createElement(`img`);
         documents.src = urlFile.url;
         documents.alt = `Document ${num}`;
-        documents.style.width = "100%";
+        documents.style.width = "95%";
         documents.style.height = "100%";
 
         divdisplay.appendChild(documents);
@@ -71,7 +71,7 @@ function ScotbyMap() {
             flexWrap: 'wrap',
             gap: '40px',
             overflowY: 'auto',
-            height: '1600px',
+            height: '1900px',
             scrollbarWidth: 'none'
           }}
         ></div>
