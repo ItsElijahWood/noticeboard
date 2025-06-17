@@ -1,62 +1,35 @@
+import { useEffect, useRef, useState } from "react";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 import HeaderIndex from "./components/HeaderIndex.js";
 import './style/app.css';
 import favicon from "./static/map_icon.png";
-import { useEffect } from "react";
+
+// Specific version of workerSrc and cloudflare otherwise will not work
+GlobalWorkerOptions.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
 function App() {
+  const [pdfUrls, setPdfUrls] = useState([]);
+
   useEffect(() => {
     async function fetchDocuments() {
       const response = await fetch('http://localhost:3001/api/documents', {
         method: 'POST',
       });
-
       const data = await response.json();
 
-      let num = 0;
+      const urls = [];
       for (const file of data[0]) {
         const response_fetch = await fetch('http://localhost:3001/api/contents/shared_noticeboard', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ file_name: file })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file_name: file }),
         });
 
         const urlFile = await response_fetch.json();
-        num += 1;
+        urls.push(urlFile.url);
+      }
 
-        const divdisplay = document.getElementById("documents_container");
-
-        const documents = document.createElement(`img`);
-        documents.src = urlFile.url;
-        documents.alt = `Document ${num}`;
-        const num_for_onclick = num;
-        documents.onclick = () => {
-          const zoomed_image = document.getElementById(`img-${num_for_onclick}`);
-          zoomed_image.style.display = "block";
-        };
-        documents.width = 570;
-        documents.height = 800;
-        documents.style.boxShadow = "5px 5px 5px black";
-
-        const zoom_document = document.createElement(`img`);
-        zoom_document.src = urlFile.url;
-        zoom_document.alt = `Zoomed in document ${num}`;
-        zoom_document.id = `img-${num}`;
-        zoom_document.style.display = "none";
-        zoom_document.style.position = "absolute";
-        zoom_document.style.top = "5%";
-        zoom_document.style.left = "31%";
-        zoom_document.style.height = "90%";
-        zoom_document.style.cursor = "pointer";
-        zoom_document.onclick = () => {
-          zoom_document.style.display = "none";
-        }
-        zoom_document.style.border = "4px solid black";
-
-        divdisplay.appendChild(documents);
-        document.body.appendChild(zoom_document);
-      };
+      setPdfUrls(urls);
     }
 
     fetchDocuments();
@@ -75,11 +48,10 @@ function App() {
 
     setTimeout(async () => {
       await refreshNoticeBoard();
-
       window.location.reload();
     }, 60000);
   }, []);
-  
+
   return (
     <>
       <HeaderIndex />
@@ -97,7 +69,13 @@ function App() {
             height: '1600px',
             scrollbarWidth: 'none'
           }}
-        ></div>
+        >
+          {pdfUrls.map((url, index) => (
+            <div key={index}>
+              <PDFCanvas url={url} />
+            </div>
+          ))}
+        </div>
         <div
           style={{
             width: '200px',
@@ -127,6 +105,51 @@ function App() {
         </div>
       </div>
     </>
+  );
+}
+
+function PDFCanvas({ url }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const loadingTask = getDocument(url);
+    loadingTask.promise.then(pdf => {
+      pdf.getPage(1).then(page => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+
+        const scale = 0.98;
+        const viewport = page.getViewport({ scale });
+
+        const outputScale = window.devicePixelRatio || 1;
+
+        canvas.width = viewport.width * outputScale;
+        canvas.height = viewport.height * outputScale;
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+        canvas.style.boxShadow = "5px 5px 5px black";
+
+        context.setTransform(outputScale, 0, 0, outputScale, 0, 0);
+
+        page.render({
+          canvasContext: context,
+          viewport: viewport
+        });
+      });
+    }).catch(err => {
+      console.error("Failed to render PDF:", err);
+    });
+  }, [url]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        userSelect: 'none',
+        pointerEvents: 'none',
+        border: '1px solid #ccc'
+      }}
+    />
   );
 }
 
