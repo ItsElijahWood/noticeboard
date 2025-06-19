@@ -16,6 +16,7 @@ function fetchDirectorys(): string[][] {
   return directorys;
 }
 
+/// Fetches the local directorys
 export function fetchDocuments(req: Request, res: Response) {
   const directorys = fetchDirectorys();
 
